@@ -1,0 +1,81 @@
+<div ng-controller="ToolbarCtrl" class="main-shell">
+  <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+    <md-toolbar class="md-tall md-accent">
+
+      <div ng-if="isLoggedIn()" layout="column" layout-padding class="profile-container">
+        <div flex></div>
+        <div layout-padding layout="column">
+          <div class="profile-name">{{ getCurrentUser().name }}</div>
+          <div class="profile-email">{{ getCurrentUser().email }}</div>
+        </div>
+      </div>
+
+    </md-toolbar>
+    <md-list>
+        <md-subheader class="md-nosticky">카테고리</md-subheader>
+        <md-list-item ng-repeat="menu in menus" ui-sref="{{menu.move}}" ng-click="toggleLeft()">
+            <md-icon md-svg-icon="{{menu.icon}}"></md-icon>
+            <p>{{menu.name}}</p>
+        </md-list-item>
+        <md-divider></md-divider>
+    </md-list>
+  </md-sidenav>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <md-button ng-click="toggleLeft()" class="md-icon-button" aria-label="Settings">
+        <md-icon md-svg-icon="assets/icons/menu.svg"></md-icon>
+      </md-button>
+      <h2>
+          <span class="test">
+            <a ui-sref="main">GDG Incheon</a>
+          </span>
+        </h2>
+      <!--<span flex=""></span>-->
+
+        <!-- 모바일에서 툴바 메뉴가 나오지 않도록 하기 위한 css 입니다.
+         화면 크기가 850px 이상일때만 출력을 합니다.
+         만약 로그인을 툴바에 넣게 되면 수정이 필요 합니다.-->
+        <style type="text/css">
+            @media screen and (max-width: 850px){
+                .toolbar{
+                    display: none;
+                }
+            }
+        </style>
+        <!-- 툴바 메뉴 -->
+      <md-menu-bar class="toolbar">
+        <md-menu ng-repeat="menu in menus">
+          <a ui-sref="{{menu.move}}">{{menu.name}}</a>
+        </md-menu>
+      </md-menu-bar>
+
+      <md-menu>
+        <md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+          <md-icon md-menu-origin md-svg-icon="assets/icons/dots-vertical.svg"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+
+          <md-menu-item ng-hide="isLoggedIn()" ui-sref="login">
+            <md-button>
+              <md-icon md-svg-icon="action:input"></md-icon>
+              Login
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-hide="isLoggedIn()" ui-sref="signup">
+            <md-button>
+              <md-icon md-svg-icon="action:launch"></md-icon>
+              Signup
+            </md-button>
+          </md-menu-item>
+          <md-menu-item ng-show="isLoggedIn()">
+            <md-button ng-click="logout()">
+              <md-icon md-svg-icon="action:exit_to_app"></md-icon>
+              Logout
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
+
+      </md-menu>
+    </div>
+  </md-toolbar>
+</div>
